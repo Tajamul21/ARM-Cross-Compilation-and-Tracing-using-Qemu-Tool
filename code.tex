@@ -1,0 +1,321 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{graphicx}
+%\usepackage{url}
+%\usepackage{hyperref}
+%\hypersetup{
+%colorlinks=true,
+%linkcolor=blue,
+%urlcolor=blue,}
+\title {COMPUTER ORGANIZATION AND ARCHITECTURE\\   Assignment 1 }
+\author{by \\Tajamul Ashraf \\ And \\Fuzayil-Bin-Afzal Mir}
+\date{\today}
+
+\begin{document}	
+\maketitle
+\newpage
+\tableofcontents
+\newpage
+
+\section{ARM cross compiler}
+\subsection{Introduction}
+\paragraph{ARM cross compiler}
+Cross-compilation is the process of compiling code for one computer system (also known as the target) on a different system, called the host.  
+A  cross compiler is a type of compiler, that generates machine code targeted to run on a system different than the one genrating it.Like we used arm cross compiler to convert from X86 processsor to ARM.
+The Process of creating executable code for different machines is called re-targeting.The cross compiler is also called as retargetable compiler.We have usesd GNU GCC cross compiler.
+A cross compiler is a compiler capable of creating executable code for a platform other than the one on which the compiler is running. For example, a compiler that runs on a
+X86 processor but generates code that runs on ARM Processor is a cross compiler.
+
+A cross compiler is necessary to compile code for multiple platforms from one development host. Direct compilation on the target platform might be infeasible, for example on X86 using .o file
+, because those systems contain no operating system. In generalization, one computer runs multiple operating systems and a cross compiler could generate an executable for each of them from one main source.
+
+Cross compilers are distinct from source-to-source compilers. A cross compiler is for cross-platform software development of machine 
+code, while a source-to-source compiler translates from one programming language to another in text code. Both are programming tools.  
+The GNU Arm Embedded Toolchain is a ready-to-use, open-source suite of tools for C(As in our case), C++ and assembly programming.
+The GNU Arm Embedded Toolchain targets the 32-bit Arm Cortex-A, Arm Cortex-M, and Arm Cortex-R processor families.
+\section{Ubuntu}
+\subsection{How to install ubuntu}
+1.Open the Ubuntu website. Go to %\url{https://www.ubuntu.com/download/desktop}
+
+You can download the Ubuntu disk image (also known as an ISO file) here.\\
+2.Install VirtualBox.\\
+3.Select your Ubuntu ISO.
+Go to the folder into which the Ubuntu ISO file downloaded (e.g., Desktop), then click the ISO file to select it.\\
+4.Check the "Erase disk and install Ubuntu" box.\\
+5.Personalize the ubuntu.\\
+6.Restart the virtual machine. Once you see the Restart Now button,
+do the following:
+click the Exit button in the upper-right corner of the window (Windows) or the upper-left corner of the window (Mac), 
+check the "Power off the machine" box, click OK.\\
+7.You are ready to use ubuntu.
+\subsection{How to Install arm-linux-gnueabi cross compiler}
+1.Visit the link :$ https://www.acmesystems.it/arm9_toolchain$\\
+2.As I am using an Arietta, open the terminal of ubuntu(by crtl+alt+t)\\
+write:\\
+$sudo apt-get install gcc-arm-linux-gnueabi g++-arm-linux-gnueabi$
+3.After writing the above code, package will start downloading.\\
+4.You are ready to use ARM cross compiler
+
+\section{Qemu tool  }
+\subsection{How to install Qemu tool on your system.}
+1.Open th Terminal in Ubuntu\\
+2.Run update command to update package repositories and get latest package information.\\
+ $sudo apt-get update -y$\\
+3.Run the install command with -y flag to quickly install the packages and dependencies.\\
+ $sudo apt-get install -y qemu-user-static$\\
+4.Check the system logs to confirm that there are no related errors.
+\subsection{How to run the generated executable using qemu tool.} 
+1.First form the .c file.\\
+2.create a .s file.\\
+3.We have to run the binary with Qemu\\
+write :$ qemu-arm -L/usr/arm-linux-gnueabi/ program name.o$\\
+\section{Program Hello World}
+1.Open the Terminal.\\
+ \begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{1.jpg}
+	\caption{ 4.1}
+\end{figure}
+2.Write the command: touch  helloworld.c \\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{2.jpg}
+	\caption{ 4.2}
+\end{figure}
+3.Open the file and write the code for helloworld as shown in fig 4.1 and 4.2\\
+4.Write the command: gcc helloworld.c -o helloworld\\
+5.Your helloworld.c file is ready\\
+
+\subsection{ How to generate the assembly code for the hello-world.c program using the crosscompiler. }
+Now for the assembly code using cross compiler\\
+ \begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{3.jpg}
+	\caption{ 4.3}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{4.jpg}
+	\caption{ 4.4}
+\end{figure}
+1.Write the command gcc -sS helloworld.c \\
+Ls\\
+cat helloworld.s\\
+2. Your helloworld.s file (assembly code)is ready
+\newpage
+\subsection{How to generate the executable of the program using the cross-compiler. }
+In the Terminal 
+use the follwing commands: \\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{5.jpg}
+	\caption{ 4.5}
+\end{figure}
+arm-linux-gnueabi-gcc helloworld.c -o helloworld.o\\
+qemu-arm -L /usr/arm-linux-gmueabi/ helloworld.o
+\subsection{Program Tracing }
+	\begin{tabular}{|1|1|1|1|1|1|1|}
+		\begin{tabular}{|1|1|1|1|1|1|1|}
+			\hline
+			Instruction& DESTIN & ATION & SR & C1 & SR & C2 \\ 
+			\hline
+			\hline
+			\hline
+			& loc & value & loc & value & loc & value \\ 
+			\hline
+			str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+			\hline
+			ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+			\hline
+			add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+			\hline
+			ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+			\hline
+			bl printf & lr & line 33 & func & printf &  &  \\ 
+			\hline
+			
+	\end{tabular}
+\section{Program Add}
+1.Open the Terminal.\\
+\newpage
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{6.jpg}
+	\caption{ 5.6}
+\end{figure}
+2.Write the command: touch  add.c \\
+
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{7.jpg}
+	\caption{ 5.7}
+\end{figure}
+3.Open the file and write the code for program add as shown in fig 5.6 and 5.7\\
+4.Write the command: gcc add.c -o add\\
+5.Your add.c file is ready\\
+
+\subsection{ How to generate the assembly code for the add.c program using the crosscompiler. }
+Now for the assembly code using cross compiler\\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{8.jpg}
+	\caption{ 5.8}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{4.jpg}
+	\caption{ 5.9}
+\end{figure}
+1.Write the command gcc -sS add.c \\
+Ls\\
+cat add.s\\
+2. Your add.s file (assembly code)is ready
+\newpage
+\subsection{How to generate the executable of the program using the cross-compiler. }
+In the Terminal 
+use the follwing commands: \\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{10.jpg}
+	\caption{ 5.5}
+\end{figure}
+arm-linux-gnueabi-gcc add.c -o add.o\\
+qemu-arm -L /usr/arm-linux-gmueabi/ add.o
+\subsection{Program Tracing  }
+\begin{tabular}{|1|1|1|1|1|1|1|}
+		\hline
+		Instruction& DESTIN & ATION & SR & C1 & SR & C2 \\ 
+		\hline
+		\hline
+		\hline
+		& loc & value & loc & value & loc & value \\ 
+		\hline
+		str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+		\hline
+		ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+		\hline
+		add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+		\hline
+		ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+		\hline
+		bl printf & lr & line 33 & func & printf &  &  \\ 
+		\hline
+		& loc & value & loc & value & loc & value \\ 
+		\hline
+		str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+		\hline
+		ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+		\hline
+		add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+		\hline
+		ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+		\hline
+		bl printf & lr & line 33 & func & printf &  &  \\ 
+		\hline
+		& loc & value & loc & value & loc & value \\ 
+		\hline
+		str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+		\hline
+		ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+		\hline
+		add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+		\hline
+		ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+		\hline
+		bl printf & lr & line 33 & func & printf &  &  \\ 
+		\hline\hline
+		add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+		\hline
+		ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+		\hline
+		bl printf & lr & line 33 & func & printf &  &  \\ 
+		\hline
+		
+\end{tabular}
+
+\section{Program Factorial}
+1.Open the Terminal.\\
+\newpage
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{11.jpg}
+	\caption{ 6.11}
+\end{figure}
+2.Write the command: touch  factorial.c \\
+
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{12.jpg}
+	\caption{ 6.12}
+\end{figure}
+3.Open the file and write the code for program factorial as shown in fig 6.11 and 6.12\\
+4.Write the command: gcc factorial.c -o factorial\\
+5.Your factorial.c file is ready\\
+
+\subsection{ How to generate the assembly code for the Factorial.c program using the crosscompiler. }
+Now for the assembly code using cross compiler\\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{13.jpg}
+	\caption{ 6.13}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{14.jpg}
+	\caption{ 6.14}
+\end{figure}
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{15.jpg}
+	\caption{ 6.15}
+\end{figure}
+1.Write the command gcc -sS factorial.c \\
+Ls\\
+cat factorial.s\\
+2. Your factorial.s file (assembly code)is ready
+\newpage
+\subsection{How to generate the executable of the program using the cross-compiler. }
+In the Terminal 
+use the follwing commands: \\
+\begin{figure}[h]
+	\includegraphics[width=0.2\textwidth]{16.jpg}
+	\caption{ 6.16}
+\end{figure}
+arm-linux-gnueabi-gcc factorial.c -o factorial.o\\
+qemu-arm -L /usr/arm-linux-gmueabi/ factorial.o
+\subsection{Program Tracing  }
+\begin{tabular}{|1|1|1|1|1|1|1|}
+	\hline
+	Instruction& DESTIN & ATION & SR & C1 & SR & C2 \\ 
+	\hline
+	\hline
+	\hline
+	& loc & value & loc & value & loc & value \\ 
+	\hline
+	str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+	\hline
+	ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+	\hline
+	add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+	\hline
+	ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+	\hline
+	bl printf & lr & line 33 & func & printf &  &  \\ 
+	\hline
+		& loc & value & loc & value & loc & value \\ 
+	\hline
+	str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+	\hline
+	ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+	\hline
+	add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+	\hline
+	ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+	\hline
+	bl printf & lr & line 33 & func & printf &  &  \\ 
+	\hline
+		& loc & value & loc & value & loc & value \\ 
+	\hline
+	str r3,[fp,#-16]& address & 84 & r3 & 4 & fp & 100 \\
+	\hline
+	ldr r3,[fp,#-20]& r3 & 6 & address & 80 & fp & 100 \\ 
+	\hline
+	add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+	\hline
+	ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+	\hline
+	bl printf & lr & line 33 & func & printf &  &  \\ 
+	\hline\hline
+	add r3,r2,r3& r3 & 10 & r2 & 4 & r3 & 6 \\ 
+	\hline
+	ldr r0,. L2 & r0 & value & loc & value &  &  \\ 
+	\hline
+	bl printf & lr & line 33 & func & printf &  &  \\ 
+	\hline
+	
+\end{tabular}
+\end{document}
